@@ -1,0 +1,11 @@
+Django
+pillow
+django-cleanup
+django-allauth
+django-htmx
+django-debug-toolbar
+django-extensions
+django-filter
+django-widget-tweaks
+faker
+requests
