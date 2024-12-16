@@ -45,10 +45,12 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'django_htmx',
+    'debug_toolbar',
 
     
     # internal apps 
     "users",
+    "tracker",
 ]
 
 
@@ -65,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     "allauth.account.middleware.AccountMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 
 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
