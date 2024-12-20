@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from tracker.managers import TransactionQueryset
 # Create your models here.
 
 User = get_user_model()
@@ -26,7 +27,7 @@ class Transaction(models.Model):
     created = models.DateTimeField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True , related_name="transactions")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="transactions")
-    
+    objects = TransactionQueryset.as_manager()
     class Meta:
         ordering = ("-created",)
     def __str__(self):

@@ -1,8 +1,46 @@
 <div id="transaction-container" 
 class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
-    <div class="col-span-3">
+    <div class="col-span-3 flex flex-col gap-9">
+        <div class="overflow-x-auto">
+            <h2>Totals</h2>
 
             <table class="table table-zebra">
+              <!-- head -->
+              <thead>
+                  <tr>
+                {% if total_income %}
+                  <th>Income</th>
+                {% endif %}
+                {% if total_expenses %}
+                  <th>Expenses</th>
+                {% endif %}
+                {% if total_income and total_expenses %}
+                  <th>Net Income</th>
+                {% endif %}
+                </tr>
+              </thead>
+              <tbody>
+                <!-- row -->
+                <tr>
+                {% if total_income %}
+                  <th>{{total_income}}</th>
+                {% endif %}
+                {% if total_expenses %}
+                  <td>{{total_expenses}}</td>
+                {% endif %}
+                {% if total_income and total_expenses %}
+                  <td>{{net_income}}</td>
+                {% endif %}
+                </tr>
+               
+               
+                
+              </tbody>
+            </table>
+          </div>
+        <div class="overflow-x-auto">
+            <h2>Transactions</h2>
+        <table class="table table-zebra">
                 {% if filter.qs %}
                 <!-- head -->
                 <thead>
@@ -30,6 +68,8 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
                 <p>no transactions yet</p>
                 {% endif %}
             </table>
+
+            </div>
             </div>
 
             <div class="col-span-1 justify-end">
