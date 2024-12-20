@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'debug_toolbar',
     'django_filters',
+    "widget_tweaks",
 
     
     # internal apps 

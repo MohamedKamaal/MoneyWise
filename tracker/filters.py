@@ -14,8 +14,24 @@ class TransactionFilter(django_filters.FilterSet):
         lookup_expr = "iexact",
         empty_label = "Any"
     )
+    transaction_date_from = django_filters.DateTimeFilter(
+        field_name="created",
+        lookup_expr= "gte",
+        widget = forms.DateTimeInput(attrs={"type":"date"}),
+        label = "from"
+    )
+    
+    transaction_date_to = django_filters.DateTimeFilter(
+        field_name="created",
+        lookup_expr= "lte",
+        widget = forms.DateTimeInput(attrs={"type":"date"}),
+        label = "to"
+    )
+    category = django_filters.ModelMultipleChoiceFilter(
+        queryset = Category.objects.all(),
+    )
     class Meta:
         model = Transaction
-        fields = ["transaction_type"]
+        fields = ["transaction_type","transaction_date_from","transaction_date_to"]
         
         
