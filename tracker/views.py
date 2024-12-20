@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from tracker.models import Transaction, Category
 from users.models import User 
 from django.contrib.auth.decorators import login_required
@@ -32,3 +32,17 @@ def transaction_add_view(request):
             return render(request, "partials/transaction-success.html")
     context = {"form":form}
     return render(request, "partials/transaction-add.html",context)
+
+
+@login_required
+def transaction_update_view(request,pk):
+    transaction = get_object_or_404(Transaction, pk=pk, user=request.user)
+    form = TransactionForm(instance = transaction)
+    if request.method == "POST":
+        form = TransactionForm(instance=transaction, data=request.POST)
+        if form.is_valid():
+            transaction = form.save(commit=False)
+            transaction.user = request.user 
+            transaction.save()
+            return render(request, "partials/transaction-success.html",{"transaction":transaction,"form":form})
+    return render(request, "partials/transaction-update.html",{"transaction":transaction,"form":form})
