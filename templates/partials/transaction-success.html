@@ -1,0 +1,13 @@
+<div class="flex justify between gap-8">
+    <button hx-get="{% url 'tracker:transaction-add' %}"
+            hx-target = "#transaction-block">
+
+        Add another
+    </button>
+    <button hx-get="{% url 'tracker:transactions-list' %}"
+            hx-target = "#transaction-block"
+            hx-push-url='/transactions'>
+           
+        View Transactions
+    </button>
+</div>

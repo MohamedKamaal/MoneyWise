@@ -42,7 +42,11 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
         <div class="overflow-x-auto">
             <h2 class="flex justify-between">
                 Transactions
-                <a class="cursor-pointer">
+                <a class="cursor-pointer"
+                    hx-get = "{% url 'tracker:transaction-add' %}"
+                    hx-target = "#transaction-container"
+                    hx-swap = "outerHTML"
+                    hx-push-url='add/'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="green" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 rounded-full">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                   </svg>

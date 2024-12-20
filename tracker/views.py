@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from tracker.models import Transaction, Category
 from users.models import User 
 from django.contrib.auth.decorators import login_required
 from tracker.filters import TransactionFilter
+from tracker.forms import TransactionForm
 
 
 
@@ -18,3 +19,16 @@ def transactions_list(request):
         return render(request, "partials/transaction-container.html",context)
     return render(request, "tracker/transactions-list.html",context)
 
+@login_required
+def transaction_add_view(request):
+    user = request.user 
+    form = TransactionForm()
+    if request.method == "POST":
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            transaction = form.save(commit=False)
+            transaction.user = user 
+            transaction.save()
+            return render(request, "partials/transaction-success.html")
+    context = {"form":form}
+    return render(request, "partials/transaction-add.html",context)
