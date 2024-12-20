@@ -1,0 +1,43 @@
+<div id="transaction-container" 
+class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
+    <div class="col-span-3">
+
+            <table class="table table-zebra">
+                {% if filter.qs %}
+                <!-- head -->
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for transaction in filter.qs %}
+                <!-- rows -->
+                <tr>
+                    <th>{{forloop.counter}}</th>
+                    <td>{{transaction.type}}</td>
+                    <td>{{transaction.created}}</td>
+                    <td>{{transaction.amount}}</td>
+                    <td>{{transaction.category}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <p>no transactions yet</p>
+                {% endif %}
+            </table>
+            </div>
+
+            <div class="col-span-1 justify-end">
+            <form hx-get="{% url 'tracker:transactions-list' %}"
+                  hx-target="#transaction-container"
+                  hx-swap = "outerHTML">
+                {{filter.form}}
+                <button type="submit" class="btn btn-secondary">Filter</button>
+            </form>
+            </div>
+    </div>

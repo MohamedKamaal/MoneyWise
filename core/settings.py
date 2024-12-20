@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'django_htmx',
     'debug_toolbar',
+    'django_filters',
 
     
     # internal apps 

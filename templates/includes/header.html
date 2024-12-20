@@ -10,7 +10,7 @@
         <ul class="navitems flex items-center justify-center h-full">
             {% if request.user.is_authenticated %}
             <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="">My Transactions</a></li>
+            <li><a href="{% url 'tracker:transactions-list' %}">My Transactions</a></li>
             <li><a href="">Charts</a></li>
             <li x-data="{ dropdownOpen: false }" class="relative">
                 <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="cursor-pointer select-none">

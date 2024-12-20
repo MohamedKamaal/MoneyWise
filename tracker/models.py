@@ -27,6 +27,7 @@ class Transaction(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True , related_name="transactions")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="transactions")
     
-
+    class Meta:
+        ordering = ("-created",)
     def __str__(self):
         return f"{self.user} registerd {self.amount} category {self.category} type {self.type} on data {self.created}"

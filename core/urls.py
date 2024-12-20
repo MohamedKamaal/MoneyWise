@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', home_view,name="home"),
+    path('transactions/', include("tracker.urls",namespace="tracker")),
     path('profile/', include("users.urls",namespace="profile")),
     path('@<username>/',profile_view, name="profile"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
