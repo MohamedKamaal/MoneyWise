@@ -1,3 +1,5 @@
+{% include 'includes/messages.html' %}
+
 <div class="flex justify between gap-8">
     <button hx-get="{% url 'tracker:transaction-add' %}"
             hx-target = "#transaction-block">

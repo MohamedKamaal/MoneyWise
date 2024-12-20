@@ -6,4 +6,5 @@ urlpatterns = [
     path("",transactions_list, name="transactions-list"),
     path("add/",transaction_add_view, name="transaction-add"),
     path("<pk>/update/",transaction_update_view, name="transaction-update"),
+    path("<pk>/delete/",transaction_delete_view, name="transaction-delete"),
 ]
