@@ -3,9 +3,10 @@
 {% load partials %}
 <div id="transaction-container" 
 class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
-{% if transactions %}
+
     <div class="col-span-3 flex flex-col gap-9">
         <div class="overflow-x-auto">
+          {% if transactions%}
             <h2>Totals</h2>
 
             <table class="table table-zebra">
@@ -40,6 +41,8 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
                
                 
               </tbody>
+              {% else %}
+              {% endif %}
             </table>
           </div>
         <div class="overflow-x-auto">
@@ -56,20 +59,23 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
 
                 </a>
                 <a class="cursor-pointer"
-                    hx-get=""
+                    hx-get="{% url 'tracker:export' %}"
                     hx-include="#filterform">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                   </svg>
                 </a>
                   
                 </div>
                 </h2>
+                {% if transactions %}
+
         <table class="table table-zebra">
                 <!-- head -->
                 <thead>
                 <tr>
                   
+                    <th></th>
                     <th>Type</th>
                     <th>Date</th>
                     <th>Amount</th>
@@ -95,6 +101,7 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
                 {% endif%}
 
                    
+                    <td>{{forloop.counter0|add:page_index}}</td>
                     <td>{{transaction.type}}</td>
                     <td>{{transaction.created}}</td>
                     <td>{{transaction.amount|floatformat:1|intcomma}}</td>
@@ -130,9 +137,10 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
                 {% endfor %}
                 {% endpartialdef %}
 
+                
                 </tbody>
                 {% else %}
-                <p>no transactions yet</p>
+                <p>Add tranasction</p>
                 {% endif %}
             </table>
 

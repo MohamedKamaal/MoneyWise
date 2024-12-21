@@ -1,8 +1,8 @@
 import django_filters
+from django import forms
+
 from tracker.models import Category, Transaction, Type
 from users.models import User
-from django import forms 
-
 
 # filters 
 # type filter

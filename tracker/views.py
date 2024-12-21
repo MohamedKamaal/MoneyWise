@@ -1,14 +1,16 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from tracker.models import Transaction, Category
-from users.models import User 
+from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
+
+from tracker.admin import TransactionResource
 from tracker.filters import TransactionFilter
 from tracker.forms import TransactionForm
-from django.contrib import messages
-from django.core.paginator import Paginator
-from django.conf import settings 
-
+from tracker.models import Category, Transaction
+from users.models import User
 
 
 @login_required
@@ -22,7 +24,7 @@ def transactions_list(request):
     total_expenses = filter.qs.get_total_expenses()
     total_income = filter.qs.get_total_income()
     net_income = total_income - total_expenses
-    context = {"transactions":transactions,"filter":filter, "total_expenses":total_expenses, "total_income":total_income, "net_income":net_income}
+    context = {"transactions":transactions,"filter":filter, "total_expenses":total_expenses, "total_income":total_income, "net_income":net_income,"page_index":1}
     if request.htmx:
         return render(request, "partials/transaction-container.html",context)
     return render(request, "tracker/transactions-list.html",context)
@@ -77,9 +79,17 @@ def get_transctions_view(request):
                                .select_related("category"))
     paginator = Paginator(filter.qs, settings.PAGE_SIZE)
     transactions = paginator.get_page(page)
-    return render(request, "partials/transaction-container.html#transactions-list" ,{"transactions":transactions})
+    page_index = (int(page)-1)*10+1
+    return render(request, "partials/transaction-container.html#transactions-list" ,{"transactions":transactions,"page_index":page_index})
     
 
+@login_required
 def export_view(request):
-    pass
+    if request.htmx:
+        return HttpResponse(headers={"HX-Redirect":request.get_full_path()})
+    filter = TransactionFilter(request.GET,Transaction.objects.filter(user=request.user).select_related("category"))
+    data = TransactionResource().export(filter.qs)
+    response = HttpResponse(data.csv)
+    response['Content-Disposition'] = 'attachment; filename="transactions.csv"'
+    return response 
 

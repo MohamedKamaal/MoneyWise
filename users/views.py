@@ -1,15 +1,19 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from users.models import User, Profile
-from users.forms import ProfileForm, EmailForm
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from allauth.account.utils import send_email_confirmation
-from django.contrib.auth import logout
-from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+
+from users.forms import EmailForm, ProfileForm
+from users.models import Profile, User
+
+
 # Create your views here.
 def home_view(request):
     import os
+
     from django.conf import settings
 
     print("MEDIA_ROOT:", settings.MEDIA_ROOT)  # Check this in your Django server log

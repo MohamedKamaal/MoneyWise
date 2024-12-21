@@ -1,7 +1,9 @@
 from django.contrib import admin
-from tracker.models import Category, Transaction
-from import_export import resources , fields 
+from import_export import fields, resources
 from import_export.widgets import ForeignKeyWidget
+
+from tracker.models import Category, Transaction
+
 # Register your models here.
 
 class TransactionResource(resources.ModelResource):

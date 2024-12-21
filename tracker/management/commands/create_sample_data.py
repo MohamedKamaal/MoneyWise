@@ -1,9 +1,10 @@
-from django.core.management.base import BaseCommand
-from tracker.models import Category, Transaction, Type
-from django.contrib.auth import get_user_model 
-from datetime import datetime
 import random
+from datetime import datetime
 
+from django.contrib.auth import get_user_model
+from django.core.management.base import BaseCommand
+
+from tracker.models import Category, Transaction, Type
 
 User = get_user_model()
 

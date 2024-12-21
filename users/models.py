@@ -1,6 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.templatetags.static import static 
+from django.db import models
+from django.templatetags.static import static
+
 # Create your models here.
 
 class User(AbstractUser):
