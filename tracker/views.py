@@ -6,6 +6,8 @@ from django.views.decorators.http import require_http_methods
 from tracker.filters import TransactionFilter
 from tracker.forms import TransactionForm
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.conf import settings 
 
 
 
@@ -13,10 +15,14 @@ from django.contrib import messages
 def transactions_list(request):
     user = request.user
     filter = TransactionFilter(data = request.GET,queryset=Transaction.objects.filter(user=user).select_related("category"))
+    paginator = Paginator(filter.qs,settings.PAGE_SIZE)
+    transactions = paginator.get_page(1)
+    print(transactions)
+  
     total_expenses = filter.qs.get_total_expenses()
     total_income = filter.qs.get_total_income()
     net_income = total_income - total_expenses
-    context = {"filter":filter, "total_expenses":total_expenses, "total_income":total_income, "net_income":net_income}
+    context = {"transactions":transactions,"filter":filter, "total_expenses":total_expenses, "total_income":total_income, "net_income":net_income}
     if request.htmx:
         return render(request, "partials/transaction-container.html",context)
     return render(request, "tracker/transactions-list.html",context)
@@ -61,3 +67,19 @@ def transaction_delete_view(request,pk):
     transaction.delete()
     messages.success(request,"transaction deleted")
     return render(request, "partials/transaction-success.html")
+
+
+@login_required
+def get_transctions_view(request):
+    
+    page = request.GET.get('page',1)
+    filter = TransactionFilter(request.GET,Transaction.objects.filter(user=request.user)
+                               .select_related("category"))
+    paginator = Paginator(filter.qs, settings.PAGE_SIZE)
+    transactions = paginator.get_page(page)
+    return render(request, "partials/transaction-container.html#transactions-list" ,{"transactions":transactions})
+    
+
+def export_view(request):
+    pass
+

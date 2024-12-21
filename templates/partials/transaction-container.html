@@ -1,8 +1,9 @@
 {% load widget_tweaks %}
 {% load humanize %}
-
+{% load partials %}
 <div id="transaction-container" 
 class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
+{% if transactions %}
     <div class="col-span-3 flex flex-col gap-9">
         <div class="overflow-x-auto">
             <h2>Totals</h2>
@@ -42,25 +43,33 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
             </table>
           </div>
         <div class="overflow-x-auto">
-            <h2 class="flex justify-between">
+            <h2 class="flex justify-between mb-4">
                 Transactions
+                <div class="flex items-center gap-3">
                 <a class="cursor-pointer"
                     hx-get = "{% url 'tracker:transaction-add' %}"
                     hx-target = "#transaction-container"
                     hx-swap = "outerHTML"
-                    hx-push-url='add/'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="green" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 rounded-full">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    hx-push-url='add/'
+                    hx-include="#messages">
+                    <img class="w-8 h-8" src="https://img.icons8.com/color/50/add.png" alt="add"/>
+
+                </a>
+                <a class="cursor-pointer"
+                    hx-get=""
+                    hx-include="#filterform">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                   </svg>
                 </a>
                   
+                </div>
                 </h2>
         <table class="table table-zebra">
-                {% if filter.qs %}
                 <!-- head -->
                 <thead>
                 <tr>
-                    <th></th>
+                  
                     <th>Type</th>
                     <th>Date</th>
                     <th>Amount</th>
@@ -68,10 +77,24 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
                 </tr>
                 </thead>
                 <tbody>
-                {% for transaction in filter.qs %}
+                    {% partialdef transactions-list inline=True %}
+
+                {% for transaction in transactions %}
+                {% if forloop.last and transactions.has_next %}
                 <!-- rows -->
-                <tr>
-                    <th>{{forloop.counter}}</th>
+                <tr
+                    hx-get="{% url 'tracker:get-transactions' %}?page={{transactions.next_page_number}}"
+                    hx-trigger="revealed"
+                    hx-swap="afterend"
+                    hx-include = "#filterform"
+                    hx-indicator = "#spinner">
+                    
+                    {% else %}
+                    <tr>
+                
+                {% endif%}
+
+                   
                     <td>{{transaction.type}}</td>
                     <td>{{transaction.created}}</td>
                     <td>{{transaction.amount|floatformat:1|intcomma}}</td>
@@ -99,7 +122,14 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
                           
                     </td>
                 </tr>
+                                
+                
+                
+        
+                
                 {% endfor %}
+                {% endpartialdef %}
+
                 </tbody>
                 {% else %}
                 <p>no transactions yet</p>
@@ -110,7 +140,8 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
             </div>
 
             <div class="col-span-1 ">
-            <form hx-get="{% url 'tracker:transactions-list' %}"
+            <form id="filterform" 
+            hx-get="{% url 'tracker:transactions-list' %}"
                   hx-target="#transaction-container"
                   hx-swap = "outerHTML">
                   
@@ -126,3 +157,4 @@ class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4">
             </form>
             </div>
     </div>
+    <span id="spinner" class="loading loading-bars loading-md htmx-indicator"></span>

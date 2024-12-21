@@ -1,6 +1,7 @@
 
 
-<form hx-post="{% url 'tracker:transaction-update' transaction.pk %}">
+<form hx-post="{% url 'tracker:transaction-update' transaction.pk %}"
+hx-include="#messages">
     {{form.as_p}}
     <button type="submit">update</button>
 </form>

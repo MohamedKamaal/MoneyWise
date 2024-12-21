@@ -1,14 +1,15 @@
-{% include 'includes/messages.html' %}
-
+{% include "includes/messages.html" %}
 <div class="flex justify between gap-8">
     <button hx-get="{% url 'tracker:transaction-add' %}"
-            hx-target = "#transaction-block">
+            hx-target = "#transaction-block"
+            hx-include="#messages">
 
         Add another
     </button>
     <button hx-get="{% url 'tracker:transactions-list' %}"
             hx-target = "#transaction-block"
-            hx-push-url='/transactions'>
+            hx-push-url='/transactions'
+            hx-include="#messages">
            
         View Transactions
     </button>

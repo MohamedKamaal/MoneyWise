@@ -1,6 +1,6 @@
 
 <form hx-post="{% url 'tracker:transaction-add' %}"
-      >
+hx-include="#messages">
     {{form.as_p}}
     <button type="submit">Add</button>
 </form>
