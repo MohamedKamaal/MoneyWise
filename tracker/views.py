@@ -11,7 +11,7 @@ from tracker.filters import TransactionFilter
 from tracker.forms import TransactionForm
 from tracker.models import Category, Transaction
 from users.models import User
-
+from tracker.charting import plot_types_bar_chart
 
 @login_required
 def transactions_list(request):
@@ -93,3 +93,13 @@ def export_view(request):
     response['Content-Disposition'] = 'attachment; filename="transactions.csv"'
     return response 
 
+
+@login_required
+def charts_view(request):
+    filter = TransactionFilter(request.GET, Transaction.objects.filter(user=request.user).select_related("category"))
+    type_bar = plot_types_bar_chart(filter.qs)
+    context = {"filter":filter,"type_bar":type_bar.to_html()}
+    if request.htmx:
+        
+        return render(request,"partials/charts-container.html",context)
+    return render(request,"tracker/charts.html",context)

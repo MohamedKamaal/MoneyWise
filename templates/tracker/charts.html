@@ -1,0 +1,19 @@
+{% extends "layouts/tracker.html" %}
+{% include 'includes/messages.html' %}
+{% block content %}
+
+<div id="transaction-block" >
+<h1 class="flex items-center gap-3 mt-4 mb-8 text-2xl leading-none tracking-tight md:text-3xl lg:text-4xl">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 me-2 ">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+  </svg>
+  
+  Transactions List
+</h1>
+
+<div class="reactive ">
+   {% include "partials/charts-container.html" %}
+
+  </div>
+</div>
+{% endblock content %}
