@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os 
+import environ 
+env = environ.Env()
+environ.Env.read_env()
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,8 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g1_&u0=45+9@r0$y31+o=)fqvodc)x68^%jzd^6r@-@_mjzz4v'
+SECRET_KEY = env("SECRET_KEY")
 
+print(env("SECRET_KEY"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -148,7 +155,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR/"static"]
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -162,7 +169,23 @@ AUTH_USER_MODEL = "users.User"
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_SIGNUP_REDIRECT_URL = "{% url 'account_signup' %}?next={% url 'profile-onboarding' %}"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# CA_PATH = 'F:/Projects/django-projects/dj-transactions/venv/Lib/site-packages/certifi/cacert.pem'  # Path to the CA bundle
+
+
+EMAIL_BACKEND = 'users.backends.email_backend.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'mohamedkamal.analytics@gmail.com'
+EMAIL_HOST_PASSWORD = 'dmchegnxzgunzgcu'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 PAGE_SIZE = 10
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# import certifi, os
+
+# os.environ['SSL_CERT_FILE'] = "F:/Projects/django-projects\dj-transactions/venv/Lib/site-packages/certifi/cacert.pem"
+SECURE_SSL_REDIRECT = False 
